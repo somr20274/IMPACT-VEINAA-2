@@ -1,0 +1,131 @@
+{% comment %}
+  Snippet pour afficher une commande du jour avec livraison dynamique
+  Utilisation : {% include 'dynamic-order-delivery' %}
+{% endcomment %}
+
+{% assign today = 'now' | date: '%s' %}
+{% assign delivery_start = today | plus: 172800 %}
+{% assign delivery_end = today | plus: 259200 %}
+
+{% assign delivery_start_day = delivery_start | date: '%d' %}
+{% assign delivery_end_day = delivery_end | date: '%d' %}
+
+{% assign months = 'janvier,février,mars,avril,mai,juin,juillet,août,septembre,octobre,novembre,décembre' | split: ',' %}
+{% assign delivery_month_index = delivery_start | date: '%m' | minus: 1 %}
+{% assign delivery_month = months[delivery_month_index] %}
+
+<div class="order-tracking-widget">
+  <div class="order-info">
+    <div class="order-status">
+      <div class="status-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="10" stroke="#059669" stroke-width="2"/>
+          <polyline points="12,6 12,12 16,14" stroke="#059669" stroke-width="2" fill="none"/>
+        </svg>
+      </div>
+      <div class="status-text">
+        <div class="status-label">Commande</div>
+        <div class="status-value">Aujourd'hui</div>
+      </div>
+    </div>
+    
+    <div class="arrow">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 12h14M12 5l7 7-7 7" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    
+    <div class="delivery-info">
+      <div class="delivery-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="#059669" stroke-width="2"/>
+          <line x1="16" y1="2" x2="16" y2="6" stroke="#059669" stroke-width="2"/>
+          <line x1="8" y1="2" x2="8" y2="6" stroke="#059669" stroke-width="2"/>
+          <line x1="3" y1="10" x2="21" y2="10" stroke="#059669" stroke-width="2"/>
+          <path d="M9 14l2 2 4-4" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="delivery-text">
+        <div class="delivery-label">Livraison</div>
+        <div class="delivery-value">{{ delivery_start_day }}-{{ delivery_end_day }} {{ delivery_month }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.order-tracking-widget {
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  border: 1px solid #a7f3d0;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 16px 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.order-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.order-status,
+.delivery-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.status-icon,
+.delivery-icon {
+  flex-shrink: 0;
+}
+
+.status-text,
+.delivery-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.status-label,
+.delivery-label {
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 400;
+}
+
+.status-value,
+.delivery-value {
+  font-size: 18px;
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.arrow {
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+@media (max-width: 640px) {
+  .order-tracking-widget {
+    padding: 16px;
+  }
+  
+  .order-info {
+    gap: 12px;
+  }
+  
+  .status-value,
+  .delivery-value {
+    font-size: 16px;
+  }
+  
+  .status-label,
+  .delivery-label {
+    font-size: 13px;
+  }
+}
+</style>
